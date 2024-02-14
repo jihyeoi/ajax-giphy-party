@@ -8,7 +8,8 @@ $("#giphy-form").on("submit", function (evt) {
 
 });
 
-/** Gets keyword from form */
+/** Gets user entered keyword from form */
+
 async function getKeyword() {
   let keyword = $("#keyword").val();
 
@@ -17,14 +18,25 @@ async function getKeyword() {
   // response is the response object
   const response = await fetch(
     `http://api.giphy.com/v1/gifs/search?${params}`);
-  const jsonthing = await response.json()
 
-  console.log(jsonthing);
+  appendGif(response);
 }
 
-function appendGif(responseObj) {
-  const retrievedGif =  responseObj.images.
-  gifArea.append(retrievedGif)
+/** generates a url  */
+
+async function appendGif(responseObj) {
+  const img = await responseObj.json();
+  const imgUrl = img.data[0].images.original.url;
+
+  $("#gifs").append($(`<img src=${imgUrl}>`));
 }
 
-'cfuL5gqFDreXxkWQ4o'
+// function removeButton() {
+//   $("#gifs").empty();
+// }
+
+/** remove button should remove all images  */
+
+$("#remove").on("click", function() {
+  $("#gifs").empty();
+})
